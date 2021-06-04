@@ -1,0 +1,16 @@
+{
+  "name": "mobile-tool",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "main.js",
+  "dependencies": {
+    "uview-ui": "^1.8.4",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {},
+  "license": "ISC"
+}
