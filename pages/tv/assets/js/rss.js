@@ -39,13 +39,16 @@ module.exports = {
     let vList;
     if (isIds) {
       let o = obj['list'][0];
-      let videolist = o.vod_play_url.split("#").map(s => {
-        s = s.split("$");
-        return {
-          label: s[0],
-          src: s[1]
-        };
-      });
+      let videolist = [{
+        flag: o.vod_play_from,
+        list: o.vod_play_url.split("#").map(s => {
+          s = s.split("$");
+          return {
+            label: s[0],
+            src: s[1]
+          };
+        })
+      }];
       vList = {
         id: o.vod_id,
         name: o.vod_name,
@@ -55,7 +58,7 @@ module.exports = {
         actor: o.vod_actor,
         director: o.vod_director,
         des: o.vod_content,
-        list: videolist
+        dd: videolist
       };
     } else {
       vList = obj['list'].map(o => {
@@ -67,7 +70,6 @@ module.exports = {
         }
       });
     }
-    console.log(vList)
     return {
       page: obj["page"],
       pageCount: obj["pagecount"],
@@ -75,17 +77,16 @@ module.exports = {
       vList: vList
     };
   },
-  parseXml(xml) {
+  parseXml(xml, isIds) {
     let doc = JSON.parse(convert.xml2json(xml, {
       compact: true
     }));
     const list = doc["rss"]["list"];
     const $class = doc["rss"]["class"];
     const pInfo = list["_attributes"];
-    let vList = list["video"];
-    /** 如果是数组、含有des的对象、undefined，则是搜索列表 */
-    if (!vList || Array.isArray(vList) || !vList['des']) {
-      vList = [].concat(vList || []).map(o => {
+    let vList;
+    if (!isIds) {
+      vList = [].concat(list["video"] || []).map(o => {
         return {
           id: o.id._text,
           name: o.name._cdata,
@@ -94,14 +95,33 @@ module.exports = {
         };
       });
     } else {
-      const o = vList;
-      let videolist = o.dl.dd._cdata.split("#").map(s => {
-        s = s.split("$");
-        return {
-          label: s[0],
-          src: s[1]
-        };
-      });
+      const o = list["video"];
+      let dd = o.dl.dd;
+      let videolist;
+      let formatVideoList = (o) => {
+        return o._cdata.split("#").map(s => {
+          s = s.split("$");
+          return {
+            label: s[0],
+            src: s[1]
+          };
+        });
+      }
+      if (dd.length) {
+        const len = parseInt(dd.length);
+        videolist = [];
+        for (let i = 0; i < len; ++i) {
+          videolist.push({
+            flag: dd[i]._attributes.flag,
+            list: formatVideoList(dd[i])
+          });
+        }
+      } else {
+        videolist = [{
+          flag: dd._attributes.flag,
+          list: formatVideoList(dd)
+        }];
+      }
       vList = {
         id: o.id._text,
         name: o.name._cdata,
@@ -111,7 +131,7 @@ module.exports = {
         actor: o.actor._cdata,
         director: o.director._cdata,
         des: o.des._cdata,
-        list: videolist
+        dd: videolist
       };
     }
     return {

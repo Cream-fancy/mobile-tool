@@ -1,6 +1,7 @@
 <template>
   <view class="container">
-    <video id="player" class="video" :src="src" autoplay direction="-90" objectFit="contain">
+    <web-view src="http://www.baidu.com/"></web-view>
+    <!-- <video id="player" class="video" :src="src" autoplay direction="-90" objectFit="contain"> -->
     </video>
   </view>
 </template>

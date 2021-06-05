@@ -1,5 +1,4 @@
-module.exports = [
-  {
+module.exports = [{
     type: 'xml',
     url: 'http://cj.bajiecaiji.com/inc/bjm3u8.php',
     help: 'http://bajiezy.cc/',
@@ -9,6 +8,12 @@ module.exports = [
     type: 'xml',
     url: 'https://zy.7kjx.com/api.xml',
     name: '7K'
+  },
+  {
+    type: 'xml',
+    url: 'http://cj.1156zy.net/inc/api.php',
+    name: '209资源',
+    qq: '668047772',
   },
   {
     type: 'xml',
@@ -24,20 +29,25 @@ module.exports = [
   },
   {
     type: 'xml',
+    url: 'http://www.kuaibozy.com/api.php/provide/vod/at/xml',
+    name: '快播',
+  },
+  {
+    type: 'xml',
     url: 'https://lbapi9.com/api.php/provide/vod/at/xml/',
-    name: '乐播（AV）',
+    name: '乐播【成人】',
     tg: 'lebozy',
   },
   {
     type: 'json',
     url: 'https://apihjzy.com/api.php/provide/vod/',
-    name: '花椒（AV）',
+    name: '花椒【成人】',
     tg: 'huajiaozy66',
   },
   {
     type: 'xml',
     url: 'http://cj.cangtiancj.com/api.php/provide/vod/at/xml/from/ctm3u8/',
-    name: '苍天（AV）',
+    name: '苍天【成人】',
     qq: '702636650',
   },
   {
@@ -53,42 +63,37 @@ module.exports = [
     help: 'http://bdzy.com/',
     tg: 'bdzycom',
   },
+  {
+    type: 'xml',
+    url: 'https://kongbuya.com/api.php/provide/vod/at/xml/',
+    name: '恐怖鸭【全网】',
+    qq: '902223674',
+  },
+  {
+    type: 'xml',
+    url: 'http://www.moguzyw.com:520/moguzy.php/provide/vod/at/xml/',
+    name: '蘑菇【全网】',
+    qq: '832104123',
+  },
+  {
+    type: 'xml',
+    url: 'http://zy.itono.cn/inc/api.php',
+    name: '1717资源【全网】',
+    help: 'http://zy.itono.cn/V10.php',
+  },
+  {
+    type: 'json',
+    url: 'https://zy.kuluni.cn/api.php/provide/vod/',
+    name: '零度【全网】',
+    qq: '1046842584',
+  },
   // {
   //   type: 'xml',
   //   url: 'http://api.leduozy.com/inc/api.php',
   //   help: 'http://www.leduozy.com/',
   //   name: '乐多',
   //   qq: '397698248',
-  // },
-  // {
-  //   type: 'xml',
-  //   url: 'https://kongbuya.com/api.php/provide/vod/at/xml/',
-  //   name: '恐怖鸭',
-  //   qq: '902223674',
-  // },
-  // {
-  //   type: 'xml',
-  //   url: 'http://www.moguzyw.com:520/moguzy.php/provide/vod/at/xml/',
-  //   name: '蘑菇',
-  //   qq: '832104123',
-  // },
-  // {
-  //   type: 'xml',
-  //   url: 'http://cj.1156zy.net/inc/api.php',
-  //   name: '209资源',
-  //   qq: '668047772',
-  // },
-  // {
-  //   type: 'xml',
-  //   url: 'http://zy.itono.cn/inc/api.php',
-  //   name: '1717资源',
-  //   help: 'http://zy.itono.cn/V10.php',
-  // },
-  // {
-  //   type: 'json',
-  //   url: 'https://zy.kuluni.cn/api.php/provide/vod/',
-  //   name: '零度',
-  //   qq: '1046842584',
+  //   note: '仅提供自己播放器支持的id值'
   // },
   // {
   //   type: 'xml',

@@ -1,5 +1,10 @@
 <template>
   <view class="container">
+    <view class="tip">
+      使用介绍：
+      <p>【成人】表示成人片源，福利</p>
+      <p>【全网】是指片源为官网，如芒果TV，优酷等</p>
+    </view>
     <view class="config">
       <u-form-item label="当前搜索来源" label-width="200">
         <u-input v-model="apiName" type="select" border @click="config.show = true" />
@@ -85,14 +90,22 @@
 </script>
 
 <style lang="scss" scoped>
-  .config {
-    padding: 0 20rpx;
-  }
+  .container {
+    padding: 20rpx;
 
-  .result {
-    min-height: 500rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .tip {
+      padding: 10rpx;
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 6rpx;
+    }
+
+    .result {
+      min-height: 500rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 </style>

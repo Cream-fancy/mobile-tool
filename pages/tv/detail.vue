@@ -5,7 +5,8 @@
     <u-cell-item title="更新" :value="source.last" :arrow="false" hover-class="none" />
     <u-cell-item title="内容简介" :label="source.des" :arrow="false" hover-class="none" />
     <u-cell-group title="选集" class="list">
-      <u-cell-item v-for="(item, index) in vList" :title="item.label" :label="item.src" @click="playReady(index)"
+      <u-tabs :list="channelList" :current="source.channelIdx" @change="(index)=>{source.channelIdx = index}"></u-tabs>
+      <u-cell-item v-for="(item, index) in playList" :title="item.label" :label="item.src" @click="playReady(index)"
         :arrow="false" />
     </u-cell-group>
     <u-action-sheet :list="action.list" v-model="action.show" :mask-close-able="true" @click="onPlay"></u-action-sheet>
@@ -25,13 +26,13 @@
           note: "",
           pic: "",
           des: "",
+          channelIdx: 0
         },
         vList: [],
         video: null,
         action: {
           show: false,
-          list: [
-            {
+          list: [{
               text: '浏览器观看',
               subText: '调用系统默认浏览器打开'
             },
@@ -43,8 +44,22 @@
         }
       }
     },
+    computed: {
+      channelList: function() {
+        console.log(this.vList)
+        return this.vList.map(o => {
+          return {
+            name: o.flag
+          }
+        })
+      },
+      playList: function() {
+        return this.vList.length ?
+          this.vList[this.source.channelIdx].list : [];
+      }
+    },
     onLoad(options) {
-      if(options.id){
+      if (options.id) {
         this.source.id = options.id;
         this.source.name = options.name;
         this.source.last = options.last;
@@ -62,7 +77,7 @@
         const res = await tvCore.findByIds(this.source.id);
         this.source.des = res.des;
         this.source.pic = res.pic;
-        this.vList = res.list;
+        this.vList = res.dd;
         uni.hideLoading();
       },
       playReady(index) {
