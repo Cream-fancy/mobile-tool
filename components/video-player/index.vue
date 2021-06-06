@@ -1,8 +1,6 @@
 <template>
   <view class="container">
-    <web-view src="http://www.baidu.com/"></web-view>
-    <!-- <video id="player" class="video" :src="src" autoplay direction="-90" objectFit="contain"> -->
-    </video>
+    <web-view :src="src" />
   </view>
 </template>
 
@@ -11,15 +9,18 @@
     data() {
       return {
         src: '',
-        context: null,
       }
     },
     onLoad(options) {
-      this.src = options.src;
-      this.context = uni.createVideoContext('player', this);
+      this.src = decodeURIComponent(options.src);
+      uni.setNavigationBarTitle({
+        title: decodeURIComponent(options.name)
+      })
+      if (this.src.endsWith('.m3u8')) {
+        this.src = `https://cream-fancy.gitee.io/web-player/?src=${encodeURIComponent(this.src)}&name=${options.name}`;
+      }
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 

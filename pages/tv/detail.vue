@@ -37,8 +37,8 @@
               subText: '调用系统默认浏览器打开'
             },
             {
-              text: '播放器观看',
-              subText: '无倍速'
+              text: '直接观看',
+              subText: '由Gitee和Dplayer提供支持'
             }
           ]
         }
@@ -46,7 +46,6 @@
     },
     computed: {
       channelList: function() {
-        console.log(this.vList)
         return this.vList.map(o => {
           return {
             name: o.flag
@@ -81,16 +80,17 @@
         uni.hideLoading();
       },
       playReady(index) {
-        this.video = this.vList[index];
+        this.video = this.playList[index];
         this.action.show = true;
       },
       onPlay(index) {
         if (index) {
           uni.navigateTo({
-            url: '/components/video-player/index?src=' + this.video.src
+            url: `/components/video-player/index?src=${encodeURIComponent(this.video.src)}&name=${encodeURIComponent(this.video.label)}`
           })
         } else {
           plus.runtime.openURL(this.video.src, e => {
+            console.log(e)
             uni.showToast({
               title: e
             })
