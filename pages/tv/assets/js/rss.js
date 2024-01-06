@@ -20,7 +20,7 @@ module.exports = {
         header: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
         },
-        timeout: 5000,
+        timeout: 3000,
         success(res) {
           resolve(res.statusCode == 200 ? res : {});
         },

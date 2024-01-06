@@ -1,4 +1,9 @@
 module.exports = [{
+    type: 'sp',
+    url: 'https://a1.m1907.cn/api/v/',
+    name: 'm1970'
+  },
+  {
     type: 'xml',
     url: 'http://cj.bajiecaiji.com/inc/bjm3u8.php',
     help: 'http://bajiezy.cc/',

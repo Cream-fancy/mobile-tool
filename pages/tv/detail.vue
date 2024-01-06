@@ -7,7 +7,7 @@
     <u-cell-group title="选集" class="list">
       <u-tabs :list="channelList" :current="source.channelIdx" @change="(index)=>{source.channelIdx = index}"></u-tabs>
       <u-cell-item v-for="(item, index) in playList" :title="item.label" :label="item.src" @click="playReady(index)"
-        :arrow="false" />
+        @longpress="copyLink(index)" :arrow="false" />
     </u-cell-group>
     <u-action-sheet :list="action.list" v-model="action.show" :mask-close-able="true" @click="onPlay"></u-action-sheet>
   </view>
@@ -15,6 +15,7 @@
 
 <script>
   var tvCore = require('./assets/js/core.js');
+  var tvSp = require('./assets/js/sp.js');
 
   export default {
     data() {
@@ -58,16 +59,32 @@
       }
     },
     onLoad(options) {
+      let apiIdx = this.$store.state.tv.apiIdx;
+      this.source.apiName = tvCore.cms[apiIdx].name;
       if (options.id) {
         this.source.id = options.id;
         this.source.name = options.name;
         this.source.last = options.last;
         this.source.note = options.note;
-        tvCore.setRssNet(this.$store.state.tv.apiIdx);
+        tvCore.setRssNet(apiIdx);
         this.searchById();
+      } else {
+        this.source.name = options.name;
+        this.searchByKw();
       }
     },
     methods: {
+      async searchByKw() {
+        uni.showLoading({
+          mask: true,
+          title: '搜索中'
+        });
+        const res = await tvSp[this.source.apiName].findByKeyword(this.source.name);
+        this.source.name = res.name;
+        this.source.note = res.note;
+        this.vList = res.dd;
+        uni.hideLoading();
+      },
       async searchById() {
         uni.showLoading({
           mask: true,
@@ -79,11 +96,42 @@
         this.vList = res.dd;
         uni.hideLoading();
       },
+      copyLink(index) {
+        this.playList[index].src;
+        uni.showToast({
+          title: '链接已复制',
+          duration: 1500
+        })
+      },
       playReady(index) {
         this.video = this.playList[index];
         this.action.show = true;
       },
       onPlay(index) {
+        let obj = {};
+        let vi = this.source;
+        let k = vi.apiName + '-' + vi.channelIdx + '-' + vi.id + '-' + vi.name;
+        let ep = this.video.label;
+        uni.getStorage({
+          key: 'tv_history',
+          success(res) {
+            obj = JSON.parse(res.data);
+          },
+          complete() {
+            obj[k] = {
+              ts: new Date().getTime(),
+              ep,
+              vi
+            };
+            uni.setStorage({
+              key: 'tv_history',
+              data: JSON.stringify(obj),
+              success: function() {
+                console.log('success');
+              }
+            });
+          }
+        })
         if (index) {
           uni.navigateTo({
             url: `/components/video-player/index?src=${encodeURIComponent(this.video.src)}&name=${encodeURIComponent(this.video.label)}`

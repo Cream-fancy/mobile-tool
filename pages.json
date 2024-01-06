@@ -30,6 +30,15 @@
       }
     },
     {
+      "path": "pages/tv/history",
+      "style": {
+        "navigationBarTitleText": "播放历史",
+        "enablePullDownRefresh": false,
+        "navigationBarBackgroundColor": "#2979ff",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
       "path": "components/video-player/index",
       "style": {
         "navigationBarTitleText": "播放器",

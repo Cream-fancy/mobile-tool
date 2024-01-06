@@ -1,13 +1,16 @@
 <template>
   <view class="container">
+    <u-modal v-model="modal.show" :content="modal.content" show-cancel-button @confirm="clearHistory()"></u-modal>
     <view class="tip">
-      使用介绍：
-      <p>【成人】表示成人片源，福利</p>
-      <p>【全网】是指片源为官网，如芒果TV，优酷等</p>
+      <view>仅保留最近的 50 条播放记录</view>
+      <u-row justify="around">
+        <u-button class="u-m-20" size="medium" @click="showHistory()">播放记录</u-button>
+        <u-button class="u-m-20" size="medium" @click="modal.show=true">清空记录</u-button>
+      </u-row>
     </view>
     <view class="config">
       <u-form-item label="当前搜索来源" label-width="200">
-        <u-input v-model="apiName" type="select" border @click="config.show = true" />
+        <u-input v-model="apiName" type="select" border @click="config.show=true" />
       </u-form-item>
       <u-select v-model="config.show" :default-value="[apiIdx]" :list="config.list" @confirm="setApi"></u-select>
       <u-search v-model="keyword" placeholder="搜索影片" maxlength="10" height="80" shape="square" :show-action="false"
@@ -37,6 +40,10 @@
           show: false,
           list: []
         },
+        modal: {
+          show: false,
+          content: '播放记录将会被清空'
+        }
       };
     },
     computed: {
@@ -73,9 +80,16 @@
           mask: true,
           title: '搜索中'
         });
-        let data = await tvCore.findByKeyword(this.keyword);
-        uni.hideLoading();
-        this.vList = data.vList || [];
+        if (tvCore.cms[this.apiIdx].type == 'sp') {
+          uni.navigateTo({
+            url: '/pages/tv/detail?name='
+              .concat(encodeURIComponent(this.keyword)),
+          });
+        } else {
+          let data = await tvCore.findByKeyword(this.keyword);
+          uni.hideLoading();
+          this.vList = data.vList || [];
+        }
       },
       showDetail(index) {
         let obj = this.vList[index];
@@ -84,6 +98,14 @@
             .map(k => `${k}=${encodeURIComponent(obj[k])}`)
             .join("&"),
         });
+      },
+      showHistory() {
+        uni.navigateTo({
+          url: '/pages/tv/history'
+        });
+      },
+      clearHistory() {
+        uni.clearStorage();
       }
     },
   }
